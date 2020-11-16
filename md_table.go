@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const MIN_COLUMN_WIDTH = 5
+const MIN_COLUMN_WIDTH = 3
 
 func main() {
 	fmt.Println("Start")
@@ -26,11 +26,6 @@ func Convert(table string, out io.Writer) {
 	// Remove empty lines
 	if len(lines[len(lines)-1]) == 0 {
 		lines = lines[:len(lines)-1]
-	}
-
-	// Trim lines
-	for i, line := range lines {
-		lines[i] = strings.Trim(line, " \t")
 	}
 
 	if strings.Count(table, `|`) > strings.Count(table, "\t") { // Convert from markdown to tsv
@@ -138,19 +133,24 @@ func ParseExcelTable(lines []string) *MdTable {
 	}
 
 	// Calculate alignments
-	centeredRe := regexp.MustCompile(`:-+:`)
-	leftAlignRe := regexp.MustCompile(`:-+`)
-	rightAlignRe := regexp.MustCompile(`-+:`)
 	alignments := make([]Alignment, len(table[HeaderIndex]))
-	for i, cell := range table[HeaderSeparatorIndex] {
-		if centeredRe.MatchString(cell) {
-			alignments[i] = AlignCenter
-		} else if leftAlignRe.MatchString(cell) {
-			alignments[i] = AlignLeft
-		} else if rightAlignRe.MatchString(cell) {
-			alignments[i] = AlignRight
-		} else {
-			alignments[i] = AlignNone
+	for i := 0; i < len(table[HeaderIndex]); i++ {
+		alignments[i] = AlignNone
+	}
+	if isHeaderSeparator {
+		centeredRe := regexp.MustCompile(`:-+:`)
+		leftAlignRe := regexp.MustCompile(`:-+`)
+		rightAlignRe := regexp.MustCompile(`-+:`)
+		for i, cell := range table[HeaderSeparatorIndex] {
+			if centeredRe.MatchString(cell) {
+				alignments[i] = AlignCenter
+			} else if leftAlignRe.MatchString(cell) {
+				alignments[i] = AlignLeft
+			} else if rightAlignRe.MatchString(cell) {
+				alignments[i] = AlignRight
+			} else {
+				alignments[i] = AlignNone
+			}
 		}
 	}
 
@@ -193,7 +193,12 @@ func ToMarkDown(mdTable *MdTable, out io.Writer) {
 				row[i] = fmt.Sprintf("-%s-", string(dashes))
 			}
 		}
-		fmt.Fprintf(out, "|%s|\n", strings.Join(row, "|"))
+
+		if len(mdTable.data) > 0 {
+			fmt.Fprintf(out, "|%s|\n", strings.Join(row, "|"))
+		} else {
+			fmt.Fprintf(out, "|%s|", strings.Join(row, "|"))
+		}
 	}
 
 	// Print data

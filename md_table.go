@@ -4,21 +4,52 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
+	"os"
 	"regexp"
 	"strings"
+
+	"github.com/atotto/clipboard"
 )
 
 const MIN_COLUMN_WIDTH = 3
+const USER_ONLY = 0600
 
 func main() {
 	fmt.Println("Start")
+
+	file, err := os.OpenFile("C:\\Temp\\md-table.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, USER_ONLY)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	clip, err := clipboard.ReadAll()
+	if err != nil {
+		file.WriteString(fmt.Sprintf("Failed to read from clipboard: %v\n", err))
+		log.Fatal(err)
+	}
+	file.WriteString(fmt.Sprintf("Read from clipboard: \n%s\n", clip))
+
+	buf := new(bytes.Buffer)
+	Convert(clip, buf)
+
+	out := buf.String()
+
+	file.WriteString(fmt.Sprintf("Writing to clipboard: \n%s\n", out))
+
+	err = clipboard.WriteAll(out)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("Done")
 }
 
 // Convert a markdown table from one format to the other
 func Convert(table string, out io.Writer) {
 	// Detect table format
-	lines := strings.Split(table, "\n")
+	lines := strings.Split(strings.ReplaceAll(table, "\r", ""), "\n")
 	if len(lines) == 0 {
 		return
 	}

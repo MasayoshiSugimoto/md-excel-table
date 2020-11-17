@@ -13,7 +13,7 @@ func TestConvert(t *testing.T) {
 	}{
 
 		/******************************************************************************
-		 * TSV to markdown
+		 * Markdown to TSV
 		 ******************************************************************************/
 
 		{
@@ -140,6 +140,18 @@ col 3 is	right-aligned	$1`,
 			`|  x  |  y  |    z   |
 |:---:|:---:|:------:|
 |     |  1  | 123456 |`,
+		},
+		// Extra trailing tabs
+		{
+			`Tables	Are	Cool	
+col 1 is	left-aligned	$1600	
+col 2 is	centered	$12	
+col 3 is	right-aligned	$1`,
+			`| Tables   | Are           | Cool  |
+|----------|---------------|-------|
+| col 1 is | left-aligned  | $1600 |
+| col 2 is | centered      | $12   |
+| col 3 is | right-aligned | $1    |`,
 		},
 	}
 

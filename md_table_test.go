@@ -28,6 +28,29 @@ col 1 is	left-aligned	$1600
 col 2 is	centered	$12
 col 3 is	right-aligned	$1`,
 		},
+		// Empty cell
+		{
+			`| Tables   |      Are      |  Cool |
+|----------|:-------------:|------:|
+| col 1 is |               | $1600 |`,
+			`Tables	Are	Cool
+----------	:-------------:	------:
+col 1 is		$1600`,
+		},
+		// No space arount `|`
+		{
+			`|Tables|Are|Cool|
+|---|---|---|
+|col 1 is||$1600|`,
+			`Tables	Are	Cool
+---	---	---
+col 1 is		$1600`,
+		},
+		// Just header
+		{
+			`|Tables|Are|Cool|`,
+			`Tables	Are	Cool`,
+		},
 
 		/******************************************************************************
 		 * TSV to markdown

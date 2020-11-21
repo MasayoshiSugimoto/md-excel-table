@@ -5,6 +5,8 @@ Convert your tables back and forth between Markdown and Excel/Google Sheets via 
 
 ![alt text](usage.PNG)
 
+Note: Only tested on Windows. I do not have any other machine at hand.
+
 Usage
 -----
 

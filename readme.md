@@ -5,7 +5,7 @@ Convert your tables back and forth between Markdown and Excel/Google Sheets via 
 
 ![alt text](usage.PNG)
 
-Tested on Windows, Fedora Linux 38, and macOS Ventura (M1, but compiled binary is arm64).
+Tested on Windows, Fedora Linux 38, and macOS Ventura (M1, but compiled binary is amd64).
 
 Usage
 -----

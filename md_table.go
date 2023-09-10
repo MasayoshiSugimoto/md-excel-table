@@ -8,6 +8,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"path/filepath"
 
 	"github.com/atotto/clipboard"
 )
@@ -18,7 +19,8 @@ const USER_ONLY = 0600
 func main() {
 	fmt.Println("Start")
 
-	file, err := os.OpenFile("C:\\Temp\\md-table.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, USER_ONLY)
+	tmpPath := filepath.Join(os.TempDir(), "md-table.txt")
+	file, err := os.OpenFile(tmpPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, USER_ONLY)
 	if err != nil {
 		log.Fatal(err)
 	}

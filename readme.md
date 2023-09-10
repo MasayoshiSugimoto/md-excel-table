@@ -5,7 +5,7 @@ Convert your tables back and forth between Markdown and Excel/Google Sheets via 
 
 ![alt text](usage.PNG)
 
-Tested on Windows, Linux (Fedora 38), and macOS ().
+Tested on Windows, Fedora Linux 38, and macOS Ventura (M1, but compiled binary is arm64).
 
 Usage
 -----
@@ -27,5 +27,5 @@ The application should prompt you.
 Development
 -----------
 
-1. Clone `git clone git@github.com:MasayoshiSugimoto/md-excel-table.git`.
-2. Build `go build`.
+1. Clone by running `https://github.com/MasayoshiSugimoto/md-excel-table.git` or `git clone git@github.com:MasayoshiSugimoto/md-excel-table.git`.
+2. Build by running  `go build`.
